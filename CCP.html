@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>College Complaint Portal</title>
+<style>
+:root{
+  --bg:#feffff;--card:#ffffff;--muted:#6b7280;--accent:#1e3a8a;--accent-2:#3b82f6;--border:#d1d5db;
+  --success:#16a34a;--danger:#ef4444;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+
+/* ✅ Background image on full login page */
+body{
+  background: url(Gunal_clg_BG.png) no-repeat center center/cover;
+  color:#111827;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+.hidden{display:none !important}
+
+/* LOGIN PAGE */
+.login-container{
+  max-width:400px;
+  width:100%;
+  background:rgba(255,255,255,0.9); /* semi-transparent card to make text readable */
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:32px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  backdrop-filter: blur(8px);
+}
+.login-container h1{text-align:center;font-size:24px;margin-bottom:8px;color:var(--accent)}
+.login-container p{text-align:center;color:var(--muted);margin-bottom:24px;font-size:14px}
+.login-container label{display:block;margin-bottom:6px;font-weight:600;color:#374151;font-size:14px}
+.login-container input,.login-container select{
+  width:100%;
+  padding:10px 12px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  margin-bottom:16px;
+  font-size:15px
+}
+.login-container button{
+  width:100%;
+  padding:12px;
+  border:none;
+  background:var(--accent);
+  color:white;
+  font-size:16px;
+  font-weight:600;
+  border-radius:8px;
+  cursor:pointer
+}
+.login-container button:hover{background:var(--accent-2)}
+.demo-info{margin-top:16px;font-size:13px;color:var(--muted);text-align:center}
+.demo-info b{color:#111827}
+
+/* PORTAL */
+.app{width:100%;max-width:980px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:44px;height:44px;background:var(--accent);color:white;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px}
+h2{font-size:20px;color:var(--accent);margin:0}
+.logout-btn{background:transparent;border:1px solid var(--border);padding:8px 14px;border-radius:8px;cursor:pointer}
+
+.card{background:var(--card);padding:20px;border:1px solid var(--border);border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);margin-bottom:20px}
+form label{display:block;margin-bottom:4px;color:#374151;font-weight:500}
+form input, form select, form textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:14px;font-size:15px}
+textarea{resize:vertical;min-height:120px}
+.btn{background:var(--accent);color:white;border:none;padding:12px 18px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+.btn:hover{background:var(--accent-2)}
+.controls{display:flex;align-items:center;justify-content:space-between}
+.muted{color:var(--muted);font-size:14px}
+
+.list{margin-top:20px}
+.item{padding:14px;border:1px solid var(--border);border-radius:8px;margin-bottom:10px;background:#f9fafb;display:flex;justify-content:space-between;align-items:flex-start}
+.item-details{flex:1}
+.item h4{margin:0 0 6px;font-size:16px;color:var(--accent)}
+.item p{margin:4px 0;color:#374151;font-size:14px}
+.filter-search{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.analytics{display:flex;gap:20px;margin-top:20px;flex-wrap:wrap}
+.chart{flex:1;min-width:180px;background:#f9fafb;padding:12px;border-radius:8px;text-align:center}
+.chart h4{margin-bottom:8px}
+.delete-btn{background:#ef4444;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;margin-left:8px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div class="login-container" id="loginPage">
+  <h1>Government Arts and Science College<br>Complaint Portal</h1>
+  <p>Login to submit or view complaints</p>
+  <label for="role">Select Role</label>
+  <select id="role">
+    <option value="student">Student</option>
+    <option value="admin">Admin</option>
+  </select>
+  <label for="username">Username</label>
+  <input type="text" id="username" placeholder="Enter username">
+  <label for="password">Password</label>
+  <input type="password" id="password" placeholder="Enter password">
+  <button id="loginBtn">Login</button>
+</div>
+
+<!-- COMPLAINT PORTAL -->
+<div class="app hidden" id="portalPage">
+  <header>
+    <div class="brand">
+      <div class="logo">CP</div>
+      <h2>College Complaint Portal</h2>
+    </div>
+    <button class="logout-btn" id="logoutBtn">Logout</button>
+  </header>
+
+  <!-- Student View -->
+  <div class="card" id="studentView">
+    <h3>Submit a Complaint</h3>
+    <form id="complaintForm">
+      <label>Name</label>
+      <input type="text" id="name" required>
+      <label>Department</label>
+      <input type="text" id="department" required>
+      <label>Nature of Complaint</label>
+      <select id="nature">
+        <option>Infrastructure</option>
+        <option>Academics</option>
+        <option>Hostel</option>
+        <option>Canteen</option>
+        <option>Other</option>
+      </select>
+      <label>Complaint Details</label>
+      <textarea id="details" required></textarea>
+      <button class="btn" type="submit">Send</button>
+    </form>
+    <p class="muted" id="sentMsg" style="display:none;margin-top:10px;color:var(--success)">✅ Complaint submitted successfully!</p>
+    <div class="list" id="studentHistory"></div>
+  </div>
+
+  <!-- Admin View -->
+  <div class="card hidden" id="adminView">
+    <h3>All Complaints</h3>
+    <div class="filter-search">
+      <input type="text" id="searchInput" placeholder="Search by Name, ID, Dept, Nature">
+      <select id="statusFilter">
+        <option value="all">All Status</option>
+        <option value="Received">Received</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Resolved">Resolved</option>
+      </select>
+    </div>
+    <div class="list" id="complaintsList"></div>
+    <div class="analytics">
+      <div class="chart" id="chartNature"><h4>Complaints by Nature</h4><canvas id="natureCanvas" width="200" height="200"></canvas></div>
+      <div class="chart" id="chartStatus"><h4>Complaints by Status</h4><canvas id="statusCanvas" width="200" height="200"></canvas></div>
+      <div class="chart" id="chartTotal"><h4>Total Complaints</h4><p id="totalComplaints" style="font-size:24px;font-weight:700"></p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const loginPage = document.getElementById('loginPage');
+const portalPage = document.getElementById('portalPage');
+const loginBtn = document.getElementById('loginBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+const roleSelect = document.getElementById('role');
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+const studentView = document.getElementById('studentView');
+const adminView = document.getElementById('adminView');
+const complaintForm = document.getElementById('complaintForm');
+const sentMsg = document.getElementById('sentMsg');
+const complaintsList = document.getElementById('complaintsList');
+const studentHistory = document.getElementById('studentHistory');
+const searchInput = document.getElementById('searchInput');
+const statusFilter = document.getElementById('statusFilter');
+const totalComplaints = document.getElementById('totalComplaints');
+
+const STORAGE_KEY = 'complaints_data';
+let complaintCounter = parseInt(localStorage.getItem('complaintCounter') || '0');
+let currentUser = '';
+
+function loadComplaints(){ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+function saveComplaints(arr){ localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+
+loginBtn.addEventListener('click', ()=>{
+  const role = roleSelect.value;
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value.trim();
+  currentUser = username;
+  if(role==='student' && (username==='student' && password==='student123' || (username && password))){
+    loginPage.classList.add('hidden');
+    portalPage.classList.remove('hidden');
+    studentView.classList.remove('hidden');
+    adminView.classList.add('hidden');
+    renderStudentHistory();
+  } else if(role==='admin' && username==='admin' && password==='admin123'){
+    loginPage.classList.add('hidden');
+    portalPage.classList.remove('hidden');
+    studentView.classList.add('hidden');
+    adminView.classList.remove('hidden');
+    renderAdmin();
+  } else {
+    alert('Invalid credentials');
+  }
+});
+
+logoutBtn.addEventListener('click', ()=>{
+  portalPage.classList.add('hidden');
+  loginPage.classList.remove('hidden');
+  usernameInput.value = passwordInput.value = '';
+});
+
+complaintForm.addEventListener('submit', (e)=>{
+  e.preventDefault();
+  complaintCounter++;
+  localStorage.setItem('complaintCounter', complaintCounter);
+  const data = {
+    id: `CMP-${String(complaintCounter).padStart(3,'0')}`,
+    name: document.getElementById('name').value,
+    department: document.getElementById('department').value,
+    nature: document.getElementById('nature').value,
+    details: document.getElementById('details').value,
+    status: 'Received',
+    user: currentUser,
+    time: new Date().toLocaleString()
+  };
+  const all = loadComplaints();
+  all.unshift(data);
+  saveComplaints(all);
+
+  sentMsg.style.display='block';
+  setTimeout(()=>sentMsg.style.display='none', 2500);
+  complaintForm.reset();
+  renderStudentHistory();
+});
+
+function renderStudentHistory(){
+  const all = loadComplaints().filter(c=>c.user===currentUser);
+  if(all.length===0){ studentHistory.innerHTML='<p class="muted">No complaints submitted yet.</p>'; return; }
+  studentHistory.innerHTML='<h4>Your Complaints</h4>' + all.map(c=>`<div class="item"><div class="item-details"><h4>${c.id} - ${c.nature}</h4><p>Status: ${c.status}</p><p>${c.details}</p><p><small>${c.time}</small></p></div></div>`).join('');
+}
+
+function renderAdmin(){
+  renderComplaints();
+  renderAnalytics();
+}
+
+function renderComplaints(){
+  const all = loadComplaints();
+  let filtered = all.filter(c=>{
+    const search = searchInput.value.toLowerCase();
+    return (c.name.toLowerCase().includes(search) || c.id.toLowerCase().includes(search) || c.department.toLowerCase().includes(search) || c.nature.toLowerCase().includes(search)) &&
+           (statusFilter.value==='all' || c.status===statusFilter.value);
+  });
+  complaintsList.innerHTML = '';
+  if(filtered.length===0){ complaintsList.innerHTML='<p class="muted">No complaints found.</p>'; return; }
+  filtered.forEach(c=>{
+    const div = document.createElement('div');
+    div.className='item';
+    div.innerHTML = `<div class="item-details">
+                       <h4>${c.id} - ${c.name} (${c.department})</h4>
+                       <p><b>Nature:</b> ${c.nature}</p>
+                       <p><b>Status:</b> <select class="statusSelect" data-id="${c.id}">
+                         <option ${c.status==='Received'?'selected':''}>Received</option>
+                         <option ${c.status==='In Progress'?'selected':''}>In Progress</option>
+                         <option ${c.status==='Resolved'?'selected':''}>Resolved</option>
+                       </select></p>
+                       <p>${c.details}</p>
+                       <p><small>${c.time}</small></p>
+                     </div>`;
+    const delBtn = document.createElement('button');
+    delBtn.textContent='Delete';
+    delBtn.className='delete-btn';
+    delBtn.addEventListener('click', ()=>{
+      if(confirm(`Delete complaint ${c.id}?`)){
+        const allComplaints = loadComplaints();
+        const index = allComplaints.findIndex(x=>x.id===c.id);
+        allComplaints.splice(index,1);
+        saveComplaints(allComplaints);
+        renderAdmin();
+      }
+    });
+    div.querySelector('.item-details').appendChild(delBtn);
+    complaintsList.appendChild(div);
+  });
+
+  // Status change
+  document.querySelectorAll('.statusSelect').forEach(sel=>{
+    sel.addEventListener('change', e=>{
+      const allC = loadComplaints();
+      const comp = allC.find(x=>x.id===e.target.dataset.id);
+      comp.status = e.target.value;
+      saveComplaints(allC);
+      renderAdmin();
+    });
+  });
+}
+
+function renderAnalytics(){
+  const all = loadComplaints();
+  totalComplaints.textContent = all.length;
+  const natureCount = {};
+  const statusCount = {};
+  all.forEach(c=>{
+    natureCount[c.nature] = (natureCount[c.nature]||0)+1;
+    statusCount[c.status] = (statusCount[c.status]||0)+1;
+  });
+  drawPie('natureCanvas', natureCount);
+  drawPie('statusCanvas', statusCount);
+}
+
+function drawPie(canvasId, data){
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const colors = ['#3b82f6','#ef4444','#16a34a','#f59e0b','#6366f1','#d946ef'];
+  let startAngle = 0;
+  const values = Object.values(data);
+  const total = values.reduce((a,b)=>a+b,0);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  Object.keys(data).forEach((key,i)=>{
+    const sliceAngle = 2 * Math.PI * data[key]/total;
+    ctx.beginPath();
+    ctx.moveTo(canvas.width/2, canvas.height/2);
+    ctx.arc(canvas.width/2, canvas.height/2, Math.min(canvas.width/2, canvas.height/2)-10, startAngle, startAngle + sliceAngle);
+    ctx.closePath();
+    ctx.fillStyle = colors[i % colors.length];
+    ctx.fill();
+    startAngle += sliceAngle;
+    const midAngle = startAngle - sliceAngle/2;
+    const labelX = canvas.width/2 + Math.cos(midAngle)*(canvas.width/2 - 40);
+    const labelY = canvas.height/2 + Math.sin(midAngle)*(canvas.height/2 - 40);
+    ctx.fillStyle = '#111827';
+    ctx.font = '12px Arial';
+    ctx.fillText(key, labelX-10, labelY);
+  });
+}
+</script>
+
+</body>
+</html>
